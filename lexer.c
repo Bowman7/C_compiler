@@ -66,14 +66,93 @@ bool IsDelimiter(char val){
   return false;
 
 }
+//find sub
+char* FindSubstring(int *left,int *right,char* file){
+  printf("In substr\n");
+  int l = *left;
+  int r = *right;
+  int size = strlen(file);
+  l = r;
+ 
+  while(!IsDelimiter(file[r]) && r<=size){
+    r++;
+  }
+  char* temp = (char*)malloc((r-l+1)*sizeof(char));
+
+  int count =0;
+  for(int i = l;i<r;i++){
+    temp[count] = file[i];
+    count++;
+  }
+  temp[count]= '\0';
+  //printf("Substring is: %s\n",temp);
+  l = r;
+  *left = l;
+  *right = r;
+
+  return temp;
+}
+bool IsKeyword(char* string){
+  const char* keywords[] ={
+    "auto","break","case","char","const","continue","default","do",
+    "double","else","enum","extern","float","for","goto","if",
+    "int","long","register","return","short","signed","sizeof","static",
+    "struct","switch","typedef","union","unsigned","void","volatile","while"
+  };
+  for(int i=0;i<sizeof(keywords)/sizeof(keywords[0]);i++){
+    if(strcmp(keywords[i],string) == 0){
+      return true;
+    }
+  }
+  return false;
+}
+bool CheckKeyword(char* substr,int* k_left,int* k_right){
+  int l = *k_left;
+  int r = *k_right;
+  int size = strlen(substr);
+
+  char* temp = (char*)malloc(size);
+  int count =0;
+  for(int i=0;i<size;i++){
+    temp[count]=substr[i];
+    //printf("Current string: %s\n",temp);
+
+    if(IsKeyword(temp)){
+      printf("It is a keyword: %s\n",temp);
+    }
+    count++;
+    r++;
+  }
+  return false;
+}
 //print keywords
 void PrintKeyword(char* file){
   int size = strlen(file);
-
-  for(int i=0;i<size;i++){
-    if(IsDelimiter(file[i])){
-      printf("%c is a delimiter\n",file[i]);
+  int left = 0;
+  int right = 0;
+  int k_left = 0;
+  int k_right = 0;
+  while(right<size && left<=right){
+    if(IsDelimiter(file[right])){
+      printf("%c is a delimiter\n",file[right]);
+      right++;
+      left = right;
     }
+    else if(!IsDelimiter(file[right])){
+      char* substr;
+      substr = FindSubstring(&left,&right,file);
+      printf("Substring after: %s\n",substr);
+      //from substring check if is keyword
+      if(CheckKeyword(substr,&k_left,&k_right)){
+	printf("yes keyword");
+      }
+    }
+    else{
+      right++;
+    }
+   
+    
+    //if not a delimter then check if the substr is a keyword
   }
 }
 

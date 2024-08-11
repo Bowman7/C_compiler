@@ -9,5 +9,7 @@
 char* RemoveWhiteSpace(char*);
 char* ReadFile(char*);
 void PrintKeyword(char*);
-
+char* FindSubstring(int*,int*,char*);
+bool CheckKeyword(char*,int*,int*);
+bool IsKeyword(char*);
 #endif
